@@ -12,19 +12,23 @@ const Row = styled.div`
 `;
 
 const Card = styled.div`
-  width: 150px;
+  width: 200px;
   height: 100px;
-  margin: 15px;
-  border: 2px solid #000;
+  margin: 10px;
+  border: 1px solid #000;
   border-radius: 10px;
   color: #ffffff;
   position: relative;
   cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const CardTitle = styled.p`
   position: absolute;
-  font-size: 24px;
+  font-size: 20px;
   text-align: center;
   top: 50%;
   left: 50%;
@@ -99,7 +103,7 @@ const PlayerBoard = ({
                     style={
                       card.revealed
                         ? { backgroundColor: card.color, pointerEvents: "none" }
-                        : { backgroundColor: "#663300" }
+                        : { backgroundColor: "#E7DCC9", color: "#000000" }
                     }
                     onClick={handleCardClick}
                   >

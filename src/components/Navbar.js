@@ -17,6 +17,10 @@ const Nav = styled.div`
     margin: 0;
     font-weight: bold;
   }
+
+  select {
+    margin-right: 20px;
+  }
 `;
 
 const Navbar = ({ gameColor, onRoleSelect, onTeamSelect }) => {
