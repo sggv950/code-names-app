@@ -77,10 +77,23 @@ const GameMoves = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+
+  p {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
 `;
 
-const MentorBoard = ({ board, onMentorClueChange, mentorClue, teamTurn }) => {
+const MentorBoard = ({
+  board,
+  onMentorClueChange,
+  mentorClue,
+  teamTurn,
+  mentorColor,
+  isGameOver,
+}) => {
   const [formValues, setFormValues] = useState({ wordNum: 0, clue: "" });
   useEffect(() => {
     console.log("from mentor clue: " + formValues.clue);
@@ -90,6 +103,7 @@ const MentorBoard = ({ board, onMentorClueChange, mentorClue, teamTurn }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //TODO: handle the submit object to app component
+    onMentorClueChange(formValues);
     setFormValues({ wordNum: 0, clue: "" });
   };
 
@@ -102,7 +116,7 @@ const MentorBoard = ({ board, onMentorClueChange, mentorClue, teamTurn }) => {
   };
 
   return (
-    <Board>
+    <Board style={teamTurn !== mentorColor ? { pointerEvents: "none" } : {}}>
       <div>
         {board.map((row, ri) => {
           return (
@@ -129,7 +143,7 @@ const MentorBoard = ({ board, onMentorClueChange, mentorClue, teamTurn }) => {
       </div>
       <SideBoard>
         <Control onSubmit={handleSubmit}>
-          Clue Word:
+          Code Name:
           <input
             type="text"
             onChange={handleInputChange}
@@ -146,10 +160,23 @@ const MentorBoard = ({ board, onMentorClueChange, mentorClue, teamTurn }) => {
           <button type="submit">Send</button>
         </Control>
         <GameMoves>
-          <p style={{ color: teamTurn, fontWeight: "bold" }}>
+          <p
+            style={
+              isGameOver
+                ? { display: "none" }
+                : { color: teamTurn, fontWeight: "bold" }
+            }
+          >
             <span>{teamTurn}</span> team turn
           </p>
-          <p>some data 2</p>
+          <div>
+            <p>CodeName:</p>
+            <p>{mentorClue.clue}</p>
+          </div>
+          <div>
+            <p>Number of Words:</p>
+            <p>{mentorClue.wordNum}</p>
+          </div>
         </GameMoves>
       </SideBoard>
     </Board>

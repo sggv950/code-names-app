@@ -47,10 +47,23 @@ const GameMoves = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+
+  p {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
 `;
 
-const PlayerBoard = ({ board, onBoardClick, mentorClue, teamTurn }) => {
+const PlayerBoard = ({
+  board,
+  onBoardClick,
+  mentorClue,
+  teamTurn,
+  playerColor,
+  isGameOver,
+}) => {
   const handleCardClick = (e) => {
     e.persist();
     const pickedWord = e.target.innerText;
@@ -66,7 +79,15 @@ const PlayerBoard = ({ board, onBoardClick, mentorClue, teamTurn }) => {
   };
 
   return (
-    <Board>
+    <Board
+      style={
+        mentorClue.wordNum < 1 ||
+        mentorClue.clue === "" ||
+        teamTurn !== playerColor
+          ? { pointerEvents: "none" }
+          : {}
+      }
+    >
       <div>
         {board.map((row, ri) => {
           return (
@@ -92,10 +113,23 @@ const PlayerBoard = ({ board, onBoardClick, mentorClue, teamTurn }) => {
       </div>
       <SideBoard>
         <GameMoves>
-          <p style={{ color: teamTurn, fontWeight: "bold" }}>
+          <p
+            style={
+              isGameOver
+                ? { display: "none" }
+                : { color: teamTurn, fontWeight: "bold" }
+            }
+          >
             <span>{teamTurn}</span> team turn
           </p>
-          <p>some data 2</p>
+          <div>
+            <p>CodeName:</p>
+            <p>{mentorClue.clue}</p>
+          </div>
+          <div>
+            <p>Number of Words:</p>
+            <p>{mentorClue.wordNum}</p>
+          </div>
         </GameMoves>
       </SideBoard>
     </Board>
