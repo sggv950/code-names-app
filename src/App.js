@@ -17,7 +17,7 @@ function App() {
   const gameObj = createBoard();
   const [isMentor, updateIsMentor] = useState(true);
   const [isBluePlayer, updateIsBluePlayer] = useState(true);
-  let mentorClue = useRef({ wordNum: 0, clue: "" });
+  const [mentorClue, updateMentorClue] = useState({ wordNum: 0, clue: "" });
 
   const [gameState, updateGameState] = useState(gameObj);
   useEffect(() => {
@@ -68,7 +68,6 @@ function App() {
 
   const handleMentorClueChange = (input) => {
     console.log(input);
-    
   };
 
   return (
@@ -91,11 +90,15 @@ function App() {
                 <MentorBoard
                   onMentorClueChange={handleMentorClueChange}
                   board={gameState.gameModel}
+                  mentorClue={mentorClue}
+                  teamTurn={gameState.isBlueTeamTurn ? 'blue' : 'red'}
                 />
               ) : (
                 <PlayerBoard
                   board={gameState.gameModel}
                   onBoardClick={handleBoardClick}
+                  mentorClue={mentorClue}
+                  teamTurn={gameState.isBlueTeamTurn ? 'blue' : 'red'}
                 />
               )
             }

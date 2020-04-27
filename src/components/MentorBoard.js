@@ -42,11 +42,17 @@ const CardMark = styled.p`
   margin: 0px;
 `;
 
-const SideBoard = styled.form`
+const SideBoard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const Control = styled.form`
   width: 200px;
   height: 200px;
   border: 2px solid black;
-  margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,7 +70,17 @@ const SideBoard = styled.form`
   }
 `;
 
-const MentorBoard = ({ board, onMentorClueChange }) => {
+const GameMoves = styled.div`
+  width: 200px;
+  height: 200px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MentorBoard = ({ board, onMentorClueChange, mentorClue, teamTurn }) => {
   const [formValues, setFormValues] = useState({ wordNum: 0, clue: "" });
   useEffect(() => {
     console.log("from mentor clue: " + formValues.clue);
@@ -74,7 +90,7 @@ const MentorBoard = ({ board, onMentorClueChange }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //TODO: handle the submit object to app component
-    setFormValues({ wordNum: 0, clue: "" })
+    setFormValues({ wordNum: 0, clue: "" });
   };
 
   const handleInputChange = (e) => {
@@ -111,22 +127,30 @@ const MentorBoard = ({ board, onMentorClueChange }) => {
           );
         })}
       </div>
-      <SideBoard onSubmit={handleSubmit}>
-        Clue:
-        <input
-          type="text"
-          onChange={handleInputChange}
-          value={formValues.clue}
-          name="clue"
-        />
-        Number of words:
-        <input
-          type="text"
-          onChange={handleInputChange}
-          value={formValues.wordNum}
-          name="wordNum"
-        />
-        <button type="submit">Send</button>
+      <SideBoard>
+        <Control onSubmit={handleSubmit}>
+          Clue Word:
+          <input
+            type="text"
+            onChange={handleInputChange}
+            value={formValues.clue}
+            name="clue"
+          />
+          Number of Words:
+          <input
+            type="text"
+            onChange={handleInputChange}
+            value={formValues.wordNum}
+            name="wordNum"
+          />
+          <button type="submit">Send</button>
+        </Control>
+        <GameMoves>
+          <p style={{ color: teamTurn, fontWeight: "bold" }}>
+            <span>{teamTurn}</span> team turn
+          </p>
+          <p>some data 2</p>
+        </GameMoves>
       </SideBoard>
     </Board>
   );

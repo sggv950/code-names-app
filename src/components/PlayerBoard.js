@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
+const Board = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`;
+
 const Row = styled.div`
   display: flex;
   justify-content: center;
@@ -28,42 +33,72 @@ const CardTitle = styled.p`
   cursor: pointer;
 `;
 
-const PlayerBoard = ({board, onBoardClick}) => {
+const SideBoard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
 
+const GameMoves = styled.div`
+  width: 200px;
+  height: 200px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const PlayerBoard = ({ board, onBoardClick, mentorClue, teamTurn }) => {
   const handleCardClick = (e) => {
     e.persist();
     const pickedWord = e.target.innerText;
     const updatedBoard = JSON.parse(JSON.stringify(board));
-    const wordObjIdx = updatedBoard.findIndex(row => row.find(card => card.word === pickedWord));
-    const wordObj = updatedBoard[wordObjIdx].find(card => card.word === pickedWord);
+    const wordObjIdx = updatedBoard.findIndex((row) =>
+      row.find((card) => card.word === pickedWord)
+    );
+    const wordObj = updatedBoard[wordObjIdx].find(
+      (card) => card.word === pickedWord
+    );
     wordObj.revealed = !wordObj.revealed;
     onBoardClick(updatedBoard, wordObj.color);
-  }
+  };
 
   return (
-    <div>
-      {board.map((row, ri) => {
-        return (
-          <Row key={ri}>
-            {row.map((card) => {
-              return (
-                <Card
-                  key={card.id}
-                  style={
-                    card.revealed
-                      ? { backgroundColor: card.color, pointerEvents: 'none' }
-                      : { backgroundColor: "#663300" }
-                  }
-                  onClick={handleCardClick}
-                >
-                  <CardTitle>{card.word}</CardTitle>
-                </Card>
-              );
-            })}
-          </Row>
-        );
-      })}
-    </div>
+    <Board>
+      <div>
+        {board.map((row, ri) => {
+          return (
+            <Row key={ri}>
+              {row.map((card) => {
+                return (
+                  <Card
+                    key={card.id}
+                    style={
+                      card.revealed
+                        ? { backgroundColor: card.color, pointerEvents: "none" }
+                        : { backgroundColor: "#663300" }
+                    }
+                    onClick={handleCardClick}
+                  >
+                    <CardTitle>{card.word}</CardTitle>
+                  </Card>
+                );
+              })}
+            </Row>
+          );
+        })}
+      </div>
+      <SideBoard>
+        <GameMoves>
+          <p style={{ color: teamTurn, fontWeight: "bold" }}>
+            <span>{teamTurn}</span> team turn
+          </p>
+          <p>some data 2</p>
+        </GameMoves>
+      </SideBoard>
+    </Board>
   );
 };
 
