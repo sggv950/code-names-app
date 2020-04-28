@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import NameCard from "./NameCard";
 
 const Board = styled.div`
   display: flex;
@@ -12,12 +13,12 @@ const Row = styled.div`
 `;
 
 const Card = styled.div`
-  width: 200px;
-  height: 100px;
-  margin: 10px;
+  width: 180px;
+  height: 120px;
+  margin: 7px;
   border: 1px solid #000;
   border-radius: 10px;
-  color: #ffffff;
+  color: snow;
   position: relative;
 `;
 
@@ -102,7 +103,6 @@ const MentorBoard = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //TODO: handle the submit object to app component
     onMentorClueChange(formValues);
     setFormValues({ wordNum: 0, clue: "" });
   };
@@ -130,10 +130,12 @@ const MentorBoard = ({
                   );
                 } else {
                   return (
-                    <Card key={card.id} style={{ backgroundColor: card.color }}>
-                      <CardTitle>{card.word}</CardTitle>
-                      <CardMark>X</CardMark>
-                    </Card>
+                    <NameCard
+                      key={card.id}
+                      color={card.color}
+                      revealed={card.revealed}
+                      word={card.word}
+                    />
                   );
                 }
               })}
@@ -143,16 +145,16 @@ const MentorBoard = ({
       </div>
       <SideBoard style={isGameOver ? { display: "none" } : {}}>
         <Control onSubmit={handleSubmit}>
-          Code Name:
+          מילת קוד
           <input
             type="text"
             onChange={handleInputChange}
             value={formValues.clue}
             name="clue"
           />
-          Number of Words:
+          מספר מילים
           <input
-            type="text"
+            type="number"
             onChange={handleInputChange}
             value={formValues.wordNum}
             name="wordNum"
@@ -161,14 +163,14 @@ const MentorBoard = ({
         </Control>
         <GameMoves>
           <p style={{ color: teamTurn, fontWeight: "bold" }}>
-            <span>{teamTurn}</span> team turn
+            תור הקבוצה <span>{teamTurn === "blue" ? "הכחולה" : "האדומה"}</span>
           </p>
           <div>
-            <p>CodeName:</p>
+            <p>מילת קוד</p>
             <p>{mentorClue.clue}</p>
           </div>
           <div>
-            <p>Number of Words:</p>
+            <p>מספר מילים</p>
             <p>{mentorClue.wordNum}</p>
           </div>
         </GameMoves>

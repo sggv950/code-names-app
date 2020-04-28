@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import blueCard from '../code-names-blue.jpg';
-import redCard from '../code-names-red.jpg';
+import NameCard from "./NameCard";
 
 const Board = styled.div`
   display: flex;
@@ -11,32 +10,6 @@ const Board = styled.div`
 const Row = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const Card = styled.div`
-  width: 200px;
-  height: 100px;
-  margin: 10px;
-  border: 1px solid #000;
-  border-radius: 10px;
-  color: snow;
-  position: relative;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-const CardTitle = styled.p`
-  position: absolute;
-  font-size: 20px;
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0px;
-  cursor: pointer;
 `;
 
 const SideBoard = styled.div`
@@ -70,9 +43,7 @@ const PlayerBoard = ({
   playerColor,
   isGameOver,
 }) => {
-  const handleCardClick = (e) => {
-    e.persist();
-    const pickedWord = e.target.innerText;
+  const handleCardClick = (pickedWord) => {
     const updatedBoard = JSON.parse(JSON.stringify(board));
     const wordObjIdx = updatedBoard.findIndex((row) =>
       row.find((card) => card.word === pickedWord)
@@ -100,17 +71,13 @@ const PlayerBoard = ({
             <Row key={ri}>
               {row.map((card) => {
                 return (
-                  <Card
+                  <NameCard
                     key={card.id}
-                    style={
-                      card.revealed
-                        ? { pointerEvents: "none", backgroundSize: "cover", backgroundImage: card.color === 'blue' ? `url(${blueCard})` : `url(${redCard})`}
-                        : { backgroundColor: "#E7DCC9", color: "#000000" }
-                    }
-                    onClick={handleCardClick}
-                  >
-                    <CardTitle style={ card.revealed ? { top: "10px"} : {}}>{card.word}</CardTitle>
-                  </Card>
+                    color={card.color}
+                    revealed={card.revealed}
+                    word={card.word}
+                    onCardClick={handleCardClick}
+                  />
                 );
               })}
             </Row>
@@ -120,14 +87,14 @@ const PlayerBoard = ({
       <SideBoard style={isGameOver ? { display: "none" } : {}}>
         <GameMoves>
           <p style={{ color: teamTurn, fontWeight: "bold" }}>
-            <span>{teamTurn}</span> team turn
+            תור הקבוצה <span>{teamTurn === "blue" ? "הכחולה" : "האדומה"}</span>
           </p>
           <div>
-            <p>CodeName:</p>
+            <p>מילת קוד</p>
             <p>{mentorClue.clue}</p>
           </div>
           <div>
-            <p>Number of Words:</p>
+            <p>מספר מילים</p>
             <p>{mentorClue.wordNum}</p>
           </div>
         </GameMoves>

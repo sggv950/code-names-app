@@ -44,12 +44,12 @@ const Navbar = ({ gameColor, onRoleSelect, onTeamSelect }) => {
       <h2>CodeNames App</h2>
       <div>
         <select onChange={handleRoleSelect}>
-          <option value="player">Player</option>
-          <option value="mentor">Mentor</option>
+          <option value="player">שחקן</option>
+          <option value="mentor">מנטור</option>
         </select>
         <select onChange={handleTeamSelect}>
-          <option value="blue">Blue Team</option>
-          <option value="red">Red Team</option>
+          <option value="blue">קבוצה כחולה</option>
+          <option value="red">קבוצה אדומה</option>
         </select>
       </div>
     </Nav>
