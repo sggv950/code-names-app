@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import blueCard from '../code-names-blue.jpg';
+import redCard from '../code-names-red.jpg';
 
 const Board = styled.div`
   display: flex;
@@ -17,7 +19,7 @@ const Card = styled.div`
   margin: 10px;
   border: 1px solid #000;
   border-radius: 10px;
-  color: #ffffff;
+  color: snow;
   position: relative;
   cursor: pointer;
 
@@ -102,12 +104,12 @@ const PlayerBoard = ({
                     key={card.id}
                     style={
                       card.revealed
-                        ? { backgroundColor: card.color, pointerEvents: "none" }
+                        ? { pointerEvents: "none", backgroundSize: "cover", backgroundImage: card.color === 'blue' ? `url(${blueCard})` : `url(${redCard})`}
                         : { backgroundColor: "#E7DCC9", color: "#000000" }
                     }
                     onClick={handleCardClick}
                   >
-                    <CardTitle>{card.word}</CardTitle>
+                    <CardTitle style={ card.revealed ? { top: "10px"} : {}}>{card.word}</CardTitle>
                   </Card>
                 );
               })}
@@ -115,15 +117,9 @@ const PlayerBoard = ({
           );
         })}
       </div>
-      <SideBoard>
+      <SideBoard style={isGameOver ? { display: "none" } : {}}>
         <GameMoves>
-          <p
-            style={
-              isGameOver
-                ? { display: "none" }
-                : { color: teamTurn, fontWeight: "bold" }
-            }
-          >
+          <p style={{ color: teamTurn, fontWeight: "bold" }}>
             <span>{teamTurn}</span> team turn
           </p>
           <div>

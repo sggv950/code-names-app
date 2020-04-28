@@ -141,7 +141,7 @@ const MentorBoard = ({
           );
         })}
       </div>
-      <SideBoard>
+      <SideBoard style={isGameOver ? { display: "none" } : {}}>
         <Control onSubmit={handleSubmit}>
           Code Name:
           <input
@@ -160,13 +160,7 @@ const MentorBoard = ({
           <button type="submit">Send</button>
         </Control>
         <GameMoves>
-          <p
-            style={
-              isGameOver
-                ? { display: "none" }
-                : { color: teamTurn, fontWeight: "bold" }
-            }
-          >
+          <p style={{ color: teamTurn, fontWeight: "bold" }}>
             <span>{teamTurn}</span> team turn
           </p>
           <div>
