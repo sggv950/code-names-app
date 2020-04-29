@@ -2,20 +2,50 @@ import React, { useState, useEffect } from "react";
 import AnnouncementBar from "./AnnouncementBar";
 import PlayerBoard from "./PlayerBoard";
 import MentorBoard from "./MentorBoard";
-import io from "socket.io-client";
 import { useParams } from "react-router-dom";
+
+const io = require("socket.io-client");
+const socket = io("http://localhost:5000");
 
 function Game({ isMentor, isBluePlayer }) {
   let { gameId } = useParams();
-  
 
   const [isLoading, updateIsLoading] = useState(true);
-  const [gameState, updateGameState] = useState({});
-//   useEffect(() => {
-//     console.log(gameState);
-//     console.log("isMentor: " + isMentor);
-//     console.log("isBluePlayer: " + isBluePlayer);
-//   }, []);
+  const [gameState, updateGameState] = useState(null);
+
+  useEffect(() => {
+    if (isLoading) {
+      console.log("joining game");
+      socket.emit("game", { game: gameId });
+    }
+
+    return () => {
+      if (isLoading) {
+        console.log("leaving room");
+        socket.emit("leave game", {
+          game: gameId,
+        });
+      }
+    };
+  });
+
+  useEffect(() => {
+    socket.on("game updated", (payload) => {
+      const gameObj = JSON.parse(payload);
+      console.log("from 2nd effect payload: ", payload);
+      console.log("from 2nd effect: ", gameObj);
+      updateGameState(gameObj);
+      updateIsLoading(false);
+      console.log("from 2nd effect, gameState: ", gameState);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (gameState) {
+      const gameStateStr = JSON.stringify(gameState);
+      socket.emit("update game", { gameStateStr });
+    }
+  }, [gameState]);
 
   const handleBoardClick = (updatedBoard, pickedColor) => {
     console.log(pickedColor);
