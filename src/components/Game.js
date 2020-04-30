@@ -14,41 +14,19 @@ function Game({ isMentor, isBluePlayer }) {
   const [gameState, updateGameState] = useState(null);
 
   useEffect(() => {
-    if (isLoading) {
-      console.log("joining game");
-      socket.emit("game", { game: gameId });
-    }
-
-    return () => {
-      if (isLoading) {
-        console.log("leaving room");
-        socket.emit("leave game", {
-          game: gameId,
-        });
-      }
-    };
-  });
+    socket.emit("game", { game: gameId });
+  }, [isLoading, gameId]);
 
   useEffect(() => {
     socket.on("game updated", (payload) => {
       const gameObj = JSON.parse(payload);
-      console.log("from 2nd effect payload: ", payload);
-      console.log("from 2nd effect: ", gameObj);
       updateGameState(gameObj);
       updateIsLoading(false);
-      console.log("from 2nd effect, gameState: ", gameState);
     });
   }, []);
 
-  useEffect(() => {
-    if (gameState) {
-      const gameStateStr = JSON.stringify(gameState);
-      socket.emit("update game", { gameStateStr });
-    }
-  }, [gameState]);
 
   const handleBoardClick = (updatedBoard, pickedColor) => {
-    console.log(pickedColor);
     const stateObj = JSON.parse(JSON.stringify(gameState));
     const updatedColorCounters = { ...stateObj.colorCounters };
     let isBlueTeamTurn = stateObj.isBlueTeamTurn;
@@ -93,6 +71,17 @@ function Game({ isMentor, isBluePlayer }) {
       winnerTeam: winnerTeam,
       mentorClue,
     }));
+
+    const gameStateStr = JSON.stringify({
+      ...gameState,
+      gameModel: updatedBoard,
+      colorCounters: updatedColorCounters,
+      isGameOver: updatedIsGameOver,
+      isBlueTeamTurn,
+      winnerTeam: winnerTeam,
+      mentorClue,
+    });
+    socket.emit("update game", { gameStateStr });
   };
 
   const handleMentorClueChange = (clueObj) => {
@@ -103,6 +92,12 @@ function Game({ isMentor, isBluePlayer }) {
       ...currentValus,
       mentorClue,
     }));
+
+    const gameStateStr = JSON.stringify({
+      ...gameState,
+      mentorClue,
+    });
+    socket.emit("update game", { gameStateStr });
   };
 
   if (isLoading) {
