@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import GameMenu from "./components/GameMenu";
 import Game from "./components/Game";
@@ -29,15 +25,23 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar
-        gameColor={isMentor ? "mentor" : isBluePlayer ? "blue" : "red"}
-        onRoleSelect={handleRoleSelect}
-        onTeamSelect={handleTeamSelect}
-      />
       <Router>
+        <Navbar
+          gameColor={isMentor ? "mentor" : isBluePlayer ? "blue" : "red"}
+          onRoleSelect={handleRoleSelect}
+          onTeamSelect={handleTeamSelect}
+          isMentor={isMentor}
+          isBluePlayer={isBluePlayer}
+        />
         <Switch>
           <Route exact path="/">
-            <GameMenu onHandleGameMenu={handleGameMenu} />
+            <GameMenu
+              onHandleGameMenu={handleGameMenu}
+              onRoleSelect={handleRoleSelect}
+              onTeamSelect={handleTeamSelect}
+              isMentor={isMentor}
+              isBluePlayer={isBluePlayer}
+            />
           </Route>
           <Route path="/game/:gameId">
             <Game
