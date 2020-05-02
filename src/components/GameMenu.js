@@ -54,28 +54,34 @@ const GameMenu = ({
   isMentor,
   isBluePlayer,
 }) => {
-  const [gameId, setGameId] = useState("");
+  const [joinGameId, setJoinGameId] = useState("");
+  const [newGameId, setNewGameId] = useState("");
   let history = useHistory();
 
   const createNewGame = () => {
     return cardNameService.createGame().then((newGameId) => {
-      setGameId(newGameId);
+      setNewGameId(newGameId);
     });
   };
 
   const handleNewGameId = () => {
-    onHandleGameMenu(gameId);
-    history.push("/game/" + gameId);
+    onHandleGameMenu(newGameId);
+    history.push("/game/" + newGameId);
+  };
+
+  const handleJoinGameId = () => {
+    onHandleGameMenu(joinGameId);
+    history.push("/game/" + joinGameId);
   };
 
   const handleInputId = (e) => {
     e.persist();
-    setGameId(e.target.value);
+    setJoinGameId(e.target.value);
   };
 
   const handleSubmitFormId = (e) => {
     e.preventDefault();
-    handleNewGameId();
+    handleJoinGameId();
   };
 
   const handleRoleSelect = (e) => {
@@ -101,15 +107,15 @@ const GameMenu = ({
           <h4>משחק חדש</h4>
           <div>
             <button
-              style={gameId ? { display: "none" } : { display: "block" }}
+              style={newGameId ? { display: "none" } : { display: "block" }}
               onClick={createNewGame}
             >
               צור משחק
             </button>
           </div>
-          <div style={gameId ? { display: "block" } : { display: "none" }}>
+          <div style={newGameId ? { display: "block" } : { display: "none" }}>
             <p>game id:</p>
-            <p>{gameId}</p>
+            <p>{newGameId}</p>
             <button onClick={handleNewGameId}>התחל משחק</button>
           </div>
         </GamePickSection>
