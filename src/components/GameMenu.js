@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import cardNameService from "../services/cardNameService";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import Spinner from "./LoaderComp";
 
 const NavContainer = styled.div`
   width: 800px;

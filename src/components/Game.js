@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import AnnouncementBar from "./AnnouncementBar";
 import PlayerBoard from "./PlayerBoard";
 import MentorBoard from "./MentorBoard";
-import { useParams } from "react-router-dom";
+import Spinner from "./LoaderComp";
 
 const io = require("socket.io-client");
 const socket = io();
@@ -101,7 +102,7 @@ function Game({ isMentor, isBluePlayer }) {
   };
 
   if (isLoading) {
-    return <div>loading....</div>;
+    return <Spinner />;
   } else {
     return (
       <div>
@@ -125,7 +126,6 @@ function Game({ isMentor, isBluePlayer }) {
             isGameOver={gameState.isGameOver}
           />
         )}
-        />
       </div>
     );
   }
