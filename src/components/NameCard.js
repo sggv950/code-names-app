@@ -31,17 +31,33 @@ const CardTitle = styled.div`
   font-size: 16px;
   text-align: center;
   bottom: 18%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
   padding: 2px 0;
   cursor: pointer;
 `;
 
-const NameCard = ({ color, revealed, word, onCardClick }) => {
+const NameCard = ({ color, revealed, word, onCardClick, coor }) => {
   const handleClick = (e) => {
     e.persist();
     const pickedWord = e.target.innerText;
     onCardClick(pickedWord);
+  };
+
+  const setCardImg = (color, coor) => {
+    if(color === "blue") {
+      if(coor % 2 === 0) return blueCard2;
+      else return blueCard1;
+    }
+    if(color === "red") {
+      if(coor % 2 === 0) return redCard2;
+      else return redCard1;
+    }
+    if(color === "grey") {
+      if(coor % 2 === 0) return greyCard2;
+      else return greyCard1;
+    }
+    if(color === "black") return blackCard;
   };
 
   return (
@@ -51,14 +67,7 @@ const NameCard = ({ color, revealed, word, onCardClick }) => {
           ? {
               pointerEvents: "none",
               backgroundSize: "cover",
-              backgroundImage:
-                color === "blue"
-                  ? `url(${blueCard1})`
-                  : color === "red"
-                  ? `url(${redCard1})`
-                  : color === "grey"
-                  ? `url(${greyCard1})`
-                  : `url(${blackCard})`,
+              backgroundImage: `url(${setCardImg(color, coor)})`
             }
           : {
               backgroundSize: "cover",
@@ -68,7 +77,15 @@ const NameCard = ({ color, revealed, word, onCardClick }) => {
       }
       onClick={handleClick}
     >
-      <CardTitle style={revealed ? {} : {top: "unset", backgroundColor: "transparent", color: "black"}}>{word}</CardTitle>
+      <CardTitle
+        style={
+          revealed
+            ? {}
+            : { top: "unset", backgroundColor: "transparent", color: "black" }
+        }
+      >
+        {word}
+      </CardTitle>
     </Card>
   );
 };

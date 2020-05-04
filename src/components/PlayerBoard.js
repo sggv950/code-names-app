@@ -66,10 +66,10 @@ const PlayerBoard = ({
       }
     >
       <div>
-        {board.map((row, ri) => {
+        {board.map((row, rowIdx) => {
           return (
-            <Row key={ri}>
-              {row.map((card) => {
+            <Row key={rowIdx}>
+              {row.map((card, cardIdx) => {
                 return (
                   <NameCard
                     key={card.id}
@@ -77,6 +77,7 @@ const PlayerBoard = ({
                     revealed={card.revealed}
                     word={card.word}
                     onCardClick={handleCardClick}
+                    coor={rowIdx+cardIdx}
                   />
                 );
               })}
