@@ -118,10 +118,10 @@ const MentorBoard = ({
   return (
     <Board style={teamTurn !== mentorColor ? { pointerEvents: "none" } : {}}>
       <div>
-        {board.map((row, ri) => {
+        {board.map((row, rowIdx) => {
           return (
-            <Row key={ri}>
-              {row.map((card) => {
+            <Row key={rowIdx}>
+              {row.map((card, cardIdx) => {
                 if (!card.revealed) {
                   return (
                     <Card key={card.id} style={{ backgroundColor: card.color }}>
@@ -135,6 +135,7 @@ const MentorBoard = ({
                       color={card.color}
                       revealed={card.revealed}
                       word={card.word}
+                      coor={rowIdx+cardIdx}
                     />
                   );
                 }
@@ -159,7 +160,7 @@ const MentorBoard = ({
             value={formValues.wordNum}
             name="wordNum"
           />
-          <button type="submit">Send</button>
+          <button disabled={formValues.wordNum === 0 || formValues.clue.trim() === ""} type="submit">Send</button>
         </Control>
         <GameMoves>
           <p style={{ color: teamTurn, fontWeight: "bold" }}>

@@ -100,7 +100,7 @@ const GameMenu = ({
         <GamePickSection>
           <h4>הצטרף למשחק</h4>
           <form onSubmit={handleSubmitFormId}>
-            <button type="submit">הצטרף</button>
+            <button disabled={joinGameId.trim() === ""} type="submit">הצטרף</button>
             <input onChange={handleInputId} type="text" />
           </form>
         </GamePickSection>
