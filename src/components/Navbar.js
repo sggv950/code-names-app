@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import {Cogs, Times, Home} from '@styled-icons/fa-solid';
 import styled from "styled-components";
 
 const Nav = styled.div`
@@ -95,7 +96,7 @@ const Navbar = ({
           </div>
         ) : (
           <div>
-            <button onClick={handleShowSetting}>⚙</button>
+            <button onClick={handleShowSetting}><Cogs /></button>
           </div>
         )}
       </RightMenu>
